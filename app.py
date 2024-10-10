@@ -108,6 +108,13 @@ def get_program_address ( program_name ):
     return None
 
 
+def capitalize_words(text):
+    """
+    Capitalizes the first letter of each word and converts the rest to lowercase.
+    Handles cases like "CEDAR " or "ST REGIS" correctly.
+    """
+    return " ".join([word.capitalize() for word in text.split()])
+
 def parse_row_data(row_data):
     # Print the raw row data for debugging purposes
     print(f"Raw row data: {row_data}")
@@ -121,28 +128,29 @@ def parse_row_data(row_data):
         print(f"Error: Expected at least 14 fields but got {len(fields)}. Fields: {fields}")
         return None
 
-    # Extract the required fields
-    name = fields[0].title().replace(" ", "")  # Capitalize and remove spaces for the filename
-    program = fields[2].upper().strip()  # Program should be in uppercase and trimmed
-    position = fields[4]
-    phone_number = fields[10]
+    # Extract and format the fields with proper capitalization
+    name = capitalize_words(fields[0].strip())  # Properly capitalize the name
+    location = capitalize_words(fields[2].strip())  # Properly capitalize the location
+    program = capitalize_words(fields[3].strip())  # Properly capitalize the program name
+    position = capitalize_words(fields[4].strip())  # Properly capitalize the position
+    phone_number = fields[10].strip()  # Leave phone number as-is
 
-    # Check if the program has a corresponding address, using the improved function
-    address_tuple = get_program_address(program)
+    # Check if the location has a corresponding address in the dictionary (location in uppercase for lookup)
+    address_tuple = get_program_address(location.upper())  # Use uppercase for lookup to match dictionary keys
     if not address_tuple:
-        print(f"Error: Program '{program}' not found in PROGRAM_ADDRESS_MAP.")
+        print(f"Error: Location '{location}' not found in PROGRAM_ADDRESS_MAP.")
         return None  # Exit if no matching address is found
 
-    # Split the program address into street address and city/state/zip
+    # Split the location address into street address and city/state/zip
     street_address, city_state_zip = address_tuple
 
     # Return a dictionary of parsed data
     parsed_data = {
-        "Name": fields[0].title(),  # Capitalized Name for Filename
-        "{NAME}": fields[0].title(),  # Full Name for Placeholder Replacement
-        "{POSITION}": position,
+        "Name": name,  # Capitalized Name for Filename
+        "{NAME}": name,  # Full Name for Placeholder Replacement
+        "{POSITION}": position,  # Properly formatted position
         "{PHONE NUMBER}": phone_number,
-        "{PROGRAM}": program,
+        "{PROGRAM}": program,  # Use the properly formatted program name
         "{ADDRESS}": street_address,  # Street address goes into {ADDRESS}
         "{ADDRESS2}": city_state_zip  # City/State/Zip goes into {ADDRESS2}
     }
@@ -151,6 +159,8 @@ def parse_row_data(row_data):
     print(f"Parsed Data: {parsed_data}")
 
     return parsed_data
+
+
 
 
 
