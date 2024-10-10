@@ -53,7 +53,11 @@ PROGRAM_ADDRESS_MAP = {
     "WOODROE": ("22505 Woodroe Ave","Hayward, CA 94541")
 }
 
-
+@app.route("/reset")
+def reset():
+    global parsed_data
+    parsed_data = {}  # Clear the parsed data
+    return redirect(url_for("index"))
 
 # Comment out the email-sending function or remove it entirely if not needed
 # def send_email_with_attachment(to_email, subject, body, attachment, filename):

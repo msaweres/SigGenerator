@@ -32,9 +32,20 @@
             color: white;
             border: none;
             cursor: pointer;
+            margin-right: 10px; /* Add some space between the buttons */
         }
         .button:hover {
             background-color: #45a049;
+        }
+        .reset-button {
+            padding: 10px 20px;
+            background-color: #f44336; /* Red background for reset */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .reset-button:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -49,6 +60,8 @@
                 </div>
             {% endfor %}
             <button type="submit" class="button">Save Template</button>
+            <!-- Add a Back button here -->
+            <a href="{{ url_for('reset') }}" class="reset-button">Back</a>
         </form>
     </div>
 </body>
