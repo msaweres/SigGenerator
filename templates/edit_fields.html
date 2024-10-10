@@ -1,0 +1,55 @@
+<!-- templates/edit_fields.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Parsed Fields</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            width: 60%;
+            margin: 0 auto;
+        }
+        .field {
+            margin-bottom: 15px;
+        }
+        .field label {
+            display: block;
+            font-weight: bold;
+        }
+        .field input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Parsed Fields</h1>
+        <form action="/edit" method="POST">
+            {% for key, value in data.items() %}
+                <div class="field">
+                    <label for="{{ key }}">{{ key }}:</label>
+                    <input type="text" name="{{ key }}" id="{{ key }}" value="{{ value }}" required>
+                </div>
+            {% endfor %}
+            <button type="submit" class="button">Save Template</button>
+        </form>
+    </div>
+</body>
+</html>
