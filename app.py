@@ -45,6 +45,7 @@ PROGRAM_ADDRESS_MAP = {
     "WILLOW": ("7171 Bowling Drive, Suite 300","Sacramento, CA 95823"),
     "STAIR": ("650 Cedar Street","Berkeley, CA 94710"),
     "ST. REGIS": ("23950 Mission Blvd","Hayward, CA 94544"),
+    "ST REGIS": ("23950 Mission Blvd","Hayward, CA 94544"),
     "THE HOLLAND": ("641 West Grand Avenue","Oakland, CA 94612"),
     "THUNDER ROAD": ("390 40th Street","Oakland, CA 94609"),
     "TOWNE HOUSE": ("629 Oakland Ave","Oakland, CA 94611"),
