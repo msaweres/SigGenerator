@@ -53,6 +53,18 @@ PROGRAM_ADDRESS_MAP = {
     "WOODROE": ("22505 Woodroe Ave","Hayward, CA 94541")
 }
 
+# Dictionary to map abbreviated program names to their full names
+PROGRAM_NAME_MAP = {
+    "RTT": "Re-Entry Treatment",
+    "CWRT": "Community Wellness and Response Team",
+    "ICM": "Intensive Case Management",
+    "ECM": "Enhanced Case Management",
+    "HCS": "Housing Community Support",
+    "HPP": "Homelessness Prevention Program",
+    "NCHRC": "North County HRC"
+    # Add other abbreviations and full names as needed
+}
+
 @app.route("/reset")
 def reset():
     global parsed_data
@@ -99,6 +111,13 @@ TEMPLATE_FILE_PATH = os.path.join(script_dir,"Email Signatures TEMPLATE.docx")
 # Global variable to store parsed data (similar to original Tkinter app)
 parsed_data = {}
 
+def get_full_program_name(program):
+    """
+    Returns the full program name if the abbreviation is found in the PROGRAM_NAME_MAP.
+    Otherwise, returns the program name with proper capitalization.
+    """
+    # Check if the program is an abbreviation and replace it
+    return PROGRAM_NAME_MAP.get(program.upper(), capitalize_words(program))
 
 def get_program_address ( program_name ):
     normalized_program_name = program_name.strip().upper()
@@ -131,7 +150,8 @@ def parse_row_data(row_data):
     # Extract and format the fields with proper capitalization
     name = capitalize_words(fields[0].strip())  # Properly capitalize the name
     location = capitalize_words(fields[2].strip())  # Properly capitalize the location
-    program = capitalize_words(fields[3].strip())  # Properly capitalize the program name
+    program_abbr = fields[3].strip()  # Use the program abbreviation for lookup
+    program = get_full_program_name(program_abbr)  # Replace abbreviation with full name if applicable
     position = capitalize_words(fields[4].strip())  # Properly capitalize the position
     phone_number = fields[10].strip()  # Leave phone number as-is
 
@@ -150,7 +170,7 @@ def parse_row_data(row_data):
         "{NAME}": name,  # Full Name for Placeholder Replacement
         "{POSITION}": position,  # Properly formatted position
         "{PHONE NUMBER}": phone_number,
-        "{PROGRAM}": program,  # Use the properly formatted program name
+        "{PROGRAM}": program,  # Use the full program name
         "{ADDRESS}": street_address,  # Street address goes into {ADDRESS}
         "{ADDRESS2}": city_state_zip  # City/State/Zip goes into {ADDRESS2}
     }
